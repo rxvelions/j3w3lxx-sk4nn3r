@@ -1,18 +1,17 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>BLACKNET // СИСТЕМА ВЗЛОМА</title>
+  <title>BLACKNET // SISTEMA DE ATAQUE</title>
   <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap" rel="stylesheet" />
   <style>
     html, body {
       margin: 0;
       padding: 0;
-      background-color: #000 !important;
+      background-color: #000;
       color: #e6e6e6;
       font-family: "Courier New", monospace;
       height: 100%;
-      background-image: none !important;
     }
     .title {
       text-align: center;
@@ -74,102 +73,123 @@
 </head>
 <body>
 
-<div class="title">♱ ⛧ BLACKNET // СИСТЕМА ВЗЛОМА ⛧ ♱</div>
+<div class="title">♱ ⛧ BLACKNET // SISTEMA DE ATAQUE ⛧ ♱</div>
 
 <div class="menu">
-  <div class="option" onclick="startInfiniteDDoS()">♱ 01 Атака DDoS</div>
-  <div class="option" onclick="ipGeolocation()">♱ 02 Геолокация IP</div>
-  <div class="option" onclick="asnInfo()">♱ 03 ASN Информация</div>
-  <div class="option" onclick="userAgentInfo()">♱ 04 Информация User-Agent</div>
+  <div class="option" onclick="startInfiniteDDoS()">♱ 01 Ataque DDoS</div>
+  <div class="option" onclick="ipGeolocation()">♱ 02 Geolocalización IP</div>
+  <div class="option" onclick="asnLookup()">♱ 03 Información ASN</div>
+  <div class="option" onclick="showUserAgent()">♱ 04 Información del Navegador</div>
 </div>
 
-<div id="console">&gt; BLACKNET загружен. Ожидание ввода команды...</div>
+<div id="console">> BLACKNET cargado. Esperando comando...</div>
 
 <div class="footer">
-♱ https://t.me/darkwebdb & @rxbelions on ig | версия: 2.1 ♱
+♱ https://t.me/darkwebdb & @rxbelions on ig | versión: 2.1 ♱
 </div>
 
 <script>
-  let ddosInterval = null;
   const c = document.getElementById("console");
+  let ddosInterval;
 
   function startInfiniteDDoS() {
-    const target = prompt("Введите IP-адрес цели для DDoS:");
-    if (!target || target.trim() === "") {
-      c.classList.remove("fullscreen");
-      c.innerText = "> [ОШИБКА] IP-адрес не указан.";
+    const target = prompt("Ingresa la IP objetivo para el ataque DDoS:");
+    if (!target) {
+      c.innerText = "> [ERROR] IP no especificada.";
       return;
     }
-    if (ddosInterval) clearInterval(ddosInterval);
+
+    c.innerText = `> Módulo: Ataque DDoS\n> Objetivo: ${target}\n\n[ INICIANDO ATAQUE SIMULADO ]\n`;
     c.classList.add("fullscreen");
-    c.innerText = `> Модуль: Атака DDoS\n> Цель: ${target}\n\n[ НАЧАЛО АТАКИ ]\n\n`;
+
     let count = 1;
+    if (ddosInterval) clearInterval(ddosInterval);
     ddosInterval = setInterval(() => {
-      const packetLine = `➤ Пакет отправлен к ${target}... [${count}]`;
-      const responseLine = `⇋ Ответ: 500 Internal Server Error`;
-      const output = Math.random() > 0.5 ? `${packetLine}\n${responseLine}` : `${responseLine}\n${packetLine}`;
-      c.innerText += output + "\n\n";
+      const log = `⇨ Paquete #${count} enviado a ${target}\n⇋ Respuesta: 500 Internal Server Error\n`;
+      c.innerText += log + "\n";
       c.scrollTop = c.scrollHeight;
       count++;
-    }, 35);
+    }, 50);
   }
 
   function stopDdos() {
     if (ddosInterval) {
       clearInterval(ddosInterval);
       ddosInterval = null;
-      c.classList.remove("fullscreen");
     }
   }
 
   function ipGeolocation() {
     stopDdos();
-    const ip = prompt("Введите IP для геолокации:");
+    const ip = prompt("Ingresa la IP que deseas geolocalizar:");
     if (!ip) {
-      c.innerText = "> [ОШИБКА] IP-адрес не указан.";
+      c.innerText = "> [ERROR] IP no especificada.";
       return;
     }
-    c.innerText = `> Модуль: Геолокация IP\n> Цель: ${ip}\n> Запрос к API...\n\n`;
+
+    c.innerText = `> Módulo: Geolocalización IP\n> Objetivo: ${ip}\n> Consultando API...\n\n`;
+
     fetch(`https://ipapi.co/${encodeURIComponent(ip)}/json/`)
       .then(res => res.json())
       .then(data => {
         if (data.error) {
-          c.innerText += `[ОШИБКА] ${data.reason || 'Неверный IP'}`;
+          c.innerText += `[ERROR] ${data.reason || 'IP inválida'}`;
         } else {
-          c.innerText += `Страна: ${data.country_name}\nРегион: ${data.region}\nГород: ${data.city}\nПровайдер: ${data.org}\nКоординаты: ${data.latitude}, ${data.longitude}`;
+          c.innerText +=
+            `IP: ${data.ip}\n` +
+            `País: ${data.country_name} ${emojiFlag(data.country_code)}\n` +
+            `Región: ${data.region}\n` +
+            `Ciudad: ${data.city}\n` +
+            `Código Postal: ${data.postal}\n` +
+            `Organización: ${data.org || 'Desconocida'}\n` +
+            `ASN: ${data.asn || '—'}\n` +
+            `Zona Horaria: ${data.timezone}\n` +
+            `Coordenadas: ${data.latitude}, ${data.longitude}\n` +
+            `Mapa: https://www.google.com/maps?q=${data.latitude},${data.longitude}`;
         }
         c.scrollTop = c.scrollHeight;
       })
       .catch(() => {
-        c.innerText += "[ОШИБКА] Не удалось получить данные.";
+        c.innerText += "[ERROR] Falló la conexión con la API.";
       });
   }
 
-  function asnInfo() {
+  function emojiFlag(cc) {
+    if (!cc || cc.length !== 2) return '';
+    const codePoints = [...cc.toUpperCase()].map(c => 127397 + c.charCodeAt());
+    return String.fromCodePoint(...codePoints);
+  }
+
+  function asnLookup() {
     stopDdos();
-    const ip = prompt("Введите IP для ASN:");
+    const ip = prompt("Ingresa una IP para obtener el ASN:");
     if (!ip) {
-      c.innerText = "> [ОШИБКА] IP-адрес не указан.";
+      c.innerText = "> [ERROR] IP no especificada.";
       return;
     }
-    c.innerText = `> Модуль: ASN Информация\n> Цель: ${ip}\n> Запрос к ipinfo.io...\n\n`;
-    fetch(`https://ipinfo.io/${encodeURIComponent(ip)}/json`)
+
+    c.innerText = `> Módulo: Información ASN\n> Objetivo: ${ip}\n> Consultando...\n\n`;
+
+    fetch(`https://ipinfo.io/${encodeURIComponent(ip)}/json?token=ipinfoToken`)
       .then(res => res.json())
       .then(data => {
-        c.innerText += `ASN: ${data.asn?.asn || "Неизвестно"}\nОрганизация: ${data.org || "Неизвестно"}\nГород: ${data.city}, ${data.region}, ${data.country}`;
+        c.innerText +=
+          `IP: ${data.ip}\n` +
+          `ASN: ${data.org || 'Desconocido'}\n` +
+          `Ciudad: ${data.city}\n` +
+          `Región: ${data.region}\n` +
+          `País: ${data.country}\n`;
         c.scrollTop = c.scrollHeight;
       })
       .catch(() => {
-        c.innerText += "[ОШИБКА] Ошибка получения ASN.";
+        c.innerText += "[ERROR] Falló la solicitud.";
       });
   }
 
-  function userAgentInfo() {
+  function showUserAgent() {
     stopDdos();
-    c.innerText = `> Модуль: User-Agent\n> Информация о браузере...\n\n`;
-    const ua = navigator.userAgent;
-    c.innerText += `User-Agent:\n${ua}`;
-    c.scrollTop = c.scrollHeight;
+    c.innerText = `> Módulo: Información del Navegador\n> Detectando...\n\n`;
+    c.innerText += `User-Agent: ${navigator.userAgent}`;
   }
 </script>
 
