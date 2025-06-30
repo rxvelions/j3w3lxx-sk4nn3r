@@ -20,6 +20,10 @@
       color: #ff0000;
       text-shadow: 0 0 15px #ff0000;
       font-family: "UnifrakturCook", cursive;
+      display: none;
+    }
+    .menu, .descripcion, #console, .footer, .notaLegal {
+      display: none;
     }
     .menu {
       border: 1px solid #ff0000;
@@ -91,10 +95,63 @@
       padding: 5px;
       border-top: 1px dashed #222;
     }
+    #intro {
+      text-align: center;
+      margin-top: 100px;
+      font-family: 'UnifrakturCook', cursive;
+    }
+    #intro h1 {
+      font-size: 24px;
+      color: #ff0000;
+    }
+    #intro p {
+      color: #ff0000;
+      margin: 10px 0;
+      font-size: 14px;
+    }
+    #intro input {
+      background: #000;
+      border: 1px solid #990000;
+      color: #ffcccc;
+      padding: 8px;
+      margin-top: 10px;
+      font-family: "Courier New", monospace;
+    }
+    #intro button {
+      background: #1a0000;
+      border: 1px solid #990000;
+      color: #ffcccc;
+      padding: 10px 20px;
+      font-size: 14px;
+      margin-top: 10px;
+      cursor: pointer;
+      font-family: "Courier New", monospace;
+    }
+    #cargando {
+      text-align: center;
+      margin-top: 30px;
+      color: #ff0000;
+      font-family: 'UnifrakturCook', cursive;
+      font-size: 16px;
+      display: none;
+    }
   </style>
 </head>
 <body>
+
+<div id="intro">
+  <h1>†⛧ ♱ Bienvenido a ANTIREBELI0N ♱ ⛧†</h1>
+  <p>✟⛧✟ Ingrese la clave para acceder al núcleo ✟⛧✟</p>
+  <input type="password" id="clave" placeholder="Contraseña...">
+  <br>
+  <button onclick="verificarClave()">Acceder</button>
+  <p style="font-size: 12px;">sistema creado por @rxbelions</p>
+</div>
+
+<div id="cargando">Cargando</div>
+
 <div class="title">♱ ⛧ ANTIREBELI0N // SISTEMA DE ATAQUE ⛧ ♱</div>
+
 <div class="menu">
   <div class="option" onclick="iniciarDDoS()">♱ 01 Ataque DDoS</div>
   <div class="option" onclick="geolocalizarIP()">♱ 02 Geolocalización IP</div>
@@ -102,6 +159,7 @@
   <div class="option" onclick="mostrarUserAgent()">♱ 04 Info del Navegador</div>
   <div class="option" onclick="mostrarEncabezados()">♱ 05 Encabezados HTTP</div>
 </div>
+
 <div class="descripcion">
   <span>♱ 01 Ataque DDoS: Esta función envía tráfico hacia una dirección IP específica a través de múltiples paquetes sucesivos, generando una sobrecarga en su puerto de comunicación.</span>
   <span>♱ 02 Geolocalización IP: Obtiene detalles del proveedor de servicio, coordenadas GPS aproximadas, nombre del país y ciudad según la IP ingresada.</span>
@@ -109,14 +167,46 @@
   <span>♱ 04 Info del Navegador: Recopila los detalles técnicos de tu navegador actual, sistema operativo, motor de renderizado y versión.</span>
   <span>♱ 05 Encabezados HTTP: Visualiza todos los encabezados HTTP que tu navegador transmite al conectarse con servidores remotos.</span>
 </div>
+
 <div id="console">> ANTIREBELI0N listo. Esperando comandos...</div>
+
 <div class="footer">♱ https://t.me/darkwebdb & @rxbelions on ig | versión: 2.1 ♱</div>
+
 <div class="notaLegal">
   ⚠ Esta herramienta fue desarrollada únicamente con fines educativos y de demostración. El uso indebido es responsabilidad del usuario final. No nos hacemos responsables por los actos derivados del uso de este sistema.
 </div>
+
 <script>
 const c = document.getElementById("console");
 let ddosInterval;
+
+function verificarClave() {
+  const clave = document.getElementById("clave").value;
+  if (clave === "d3v_atacker") {
+    document.getElementById("intro").innerHTML = '<p style="color:red;">Contraseña correcta</p>';
+    const cargando = document.getElementById("cargando");
+    cargando.style.display = "block";
+    let puntos = 0;
+    const animacion = setInterval(() => {
+      puntos = (puntos + 1) % 4;
+      cargando.innerText = "Cargando" + ".".repeat(puntos);
+    }, 500);
+
+    setTimeout(() => {
+      clearInterval(animacion);
+      document.getElementById("intro").style.display = "none";
+      cargando.style.display = "none";
+      document.querySelector(".title").style.display = "block";
+      document.querySelector(".menu").style.display = "block";
+      document.querySelector(".descripcion").style.display = "block";
+      document.getElementById("console").style.display = "block";
+      document.querySelector(".footer").style.display = "block";
+      document.querySelector(".notaLegal").style.display = "block";
+    }, 15000);
+  } else {
+    alert("Clave incorrecta");
+  }
+}
 
 function iniciarDDoS() {
   const objetivo = prompt("Ingresa la IP de destino para el ataque DDoS:");
@@ -172,8 +262,7 @@ function verIPPublica() {
 
 function mostrarUserAgent() {
   detenerDDoS();
-  c.innerText = `> Módulo: Información del Navegador\n\n`;
-  c.innerText += `User-Agent: ${navigator.userAgent}`;
+  c.innerText = `> Módulo: Información del Navegador\n\nUser-Agent: ${navigator.userAgent}`;
 }
 
 function mostrarEncabezados() {
@@ -188,5 +277,6 @@ function mostrarEncabezados() {
     });
 }
 </script>
+
 </body>
 </html>
