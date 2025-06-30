@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>BLACKNET // SISTEMA DE ATAQUE</title>
-  <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
   <style>
     html, body {
       margin: 0;
@@ -72,126 +72,83 @@
   </style>
 </head>
 <body>
-
 <div class="title">♱ ⛧ BLACKNET // SISTEMA DE ATAQUE ⛧ ♱</div>
-
 <div class="menu">
-  <div class="option" onclick="startInfiniteDDoS()">♱ 01 Ataque DDoS</div>
-  <div class="option" onclick="ipGeolocation()">♱ 02 Geolocalización IP</div>
-  <div class="option" onclick="asnLookup()">♱ 03 Información ASN</div>
-  <div class="option" onclick="showUserAgent()">♱ 04 Información del Navegador</div>
+  <div class="option" onclick="iniciarDDoS()">♱ 01 Ataque DDoS</div>
+  <div class="option" onclick="geolocalizarIP()">♱ 02 Geolocalización IP</div>
+  <div class="option" onclick="verIPPublica()">♱ 03 Ver IP Pública</div>
+  <div class="option" onclick="mostrarUserAgent()">♱ 04 Info del Navegador</div>
+  <div class="option" onclick="mostrarEncabezados()">♱ 05 Encabezados HTTP</div>
 </div>
-
-<div id="console">> BLACKNET cargado. Esperando comando...</div>
-
-<div class="footer">
-♱ https://t.me/darkwebdb & @rxbelions on ig | versión: 2.1 ♱
-</div>
-
+<div id="console">> BLACKNET listo. Esperando comandos...</div>
+<div class="footer">♱ https://t.me/darkwebdb & @rxbelions on ig | versión: 2.1 ♱</div>
 <script>
-  const c = document.getElementById("console");
-  let ddosInterval;
+const c = document.getElementById("console");
+let ddosInterval;
 
-  function startInfiniteDDoS() {
-    const target = prompt("Ingresa la IP objetivo para el ataque DDoS:");
-    if (!target) {
-      c.innerText = "> [ERROR] IP no especificada.";
-      return;
-    }
-
-    c.innerText = `> Módulo: Ataque DDoS\n> Objetivo: ${target}\n\n[ INICIANDO ATAQUE SIMULADO ]\n`;
-    c.classList.add("fullscreen");
-
-    let count = 1;
-    if (ddosInterval) clearInterval(ddosInterval);
-    ddosInterval = setInterval(() => {
-      const log = `⇨ Paquete #${count} enviado a ${target}\n⇋ Respuesta: 500 Internal Server Error\n`;
-      c.innerText += log + "\n";
-      c.scrollTop = c.scrollHeight;
-      count++;
-    }, 50);
+function iniciarDDoS() {
+  const objetivo = prompt("Ingresa la IP de destino para el ataque DDoS:");
+  if (!objetivo) {
+    c.innerText = "> [ERROR] No se especificó una IP.";
+    return;
   }
+  c.innerText = `> Módulo: Ataque DDoS\n> Objetivo: ${objetivo}\n\n[ INICIANDO ATAQUE ]\n`;
+  c.classList.add("fullscreen");
+  let contador = 1;
+  if (ddosInterval) clearInterval(ddosInterval);
+  ddosInterval = setInterval(() => {
+    c.innerText += `⇨ Paquete #${contador} enviado a ${objetivo}\n⇋ Respuesta: 500 Internal Server Error\n\n`;
+    c.scrollTop = c.scrollHeight;
+    contador++;
+  }, 50);
+}
 
-  function stopDdos() {
-    if (ddosInterval) {
-      clearInterval(ddosInterval);
-      ddosInterval = null;
-    }
+function detenerDDoS() {
+  if (ddosInterval) {
+    clearInterval(ddosInterval);
+    ddosInterval = null;
   }
+}
 
-  function ipGeolocation() {
-    stopDdos();
-    const ip = prompt("Ingresa la IP que deseas geolocalizar:");
-    if (!ip) {
-      c.innerText = "> [ERROR] IP no especificada.";
-      return;
-    }
+function geolocalizarIP() {
+  detenerDDoS();
+  const ip = prompt("Ingresa la IP que deseas localizar:");
+  if (!ip) return;
+  c.innerText = `> Módulo: Geolocalización IP\n> IP objetivo: ${ip}\n\nConsultando datos...\n`;
+  fetch(`https://ipapi.co/${ip}/json/`)
+    .then(res => res.json())
+    .then(data => {
+      c.innerText += `IP: ${data.ip}\nPaís: ${data.country_name}\nRegión: ${data.region}\nCiudad: ${data.city}\nOrganización: ${data.org}\nASN: ${data.asn}\nCoordenadas: ${data.latitude}, ${data.longitude}\nVer en mapa: https://maps.google.com/?q=${data.latitude},${data.longitude}`;
+    });
+}
 
-    c.innerText = `> Módulo: Geolocalización IP\n> Objetivo: ${ip}\n> Consultando API...\n\n`;
+function verIPPublica() {
+  detenerDDoS();
+  c.innerText = `> Módulo: Obtener IP Pública\n\nRealizando solicitud...\n`;
+  fetch('https://api.ipify.org?format=json')
+    .then(res => res.json())
+    .then(data => {
+      c.innerText += `Tu IP pública es: ${data.ip}`;
+    });
+}
 
-    fetch(`https://ipapi.co/${encodeURIComponent(ip)}/json/`)
-      .then(res => res.json())
-      .then(data => {
-        if (data.error) {
-          c.innerText += `[ERROR] ${data.reason || 'IP inválida'}`;
-        } else {
-          c.innerText +=
-            `IP: ${data.ip}\n` +
-            `País: ${data.country_name} ${emojiFlag(data.country_code)}\n` +
-            `Región: ${data.region}\n` +
-            `Ciudad: ${data.city}\n` +
-            `Código Postal: ${data.postal}\n` +
-            `Organización: ${data.org || 'Desconocida'}\n` +
-            `ASN: ${data.asn || '—'}\n` +
-            `Zona Horaria: ${data.timezone}\n` +
-            `Coordenadas: ${data.latitude}, ${data.longitude}\n` +
-            `Mapa: https://www.google.com/maps?q=${data.latitude},${data.longitude}`;
-        }
-        c.scrollTop = c.scrollHeight;
-      })
-      .catch(() => {
-        c.innerText += "[ERROR] Falló la conexión con la API.";
-      });
-  }
+function mostrarUserAgent() {
+  detenerDDoS();
+  c.innerText = `> Módulo: Información del Navegador\n\n`;
+  c.innerText += `User-Agent: ${navigator.userAgent}`;
+}
 
-  function emojiFlag(cc) {
-    if (!cc || cc.length !== 2) return '';
-    const codePoints = [...cc.toUpperCase()].map(c => 127397 + c.charCodeAt());
-    return String.fromCodePoint(...codePoints);
-  }
-
-  function asnLookup() {
-    stopDdos();
-    const ip = prompt("Ingresa una IP para obtener el ASN:");
-    if (!ip) {
-      c.innerText = "> [ERROR] IP no especificada.";
-      return;
-    }
-
-    c.innerText = `> Módulo: Información ASN\n> Objetivo: ${ip}\n> Consultando...\n\n`;
-
-    fetch(`https://ipinfo.io/${encodeURIComponent(ip)}/json?token=ipinfoToken`)
-      .then(res => res.json())
-      .then(data => {
-        c.innerText +=
-          `IP: ${data.ip}\n` +
-          `ASN: ${data.org || 'Desconocido'}\n` +
-          `Ciudad: ${data.city}\n` +
-          `Región: ${data.region}\n` +
-          `País: ${data.country}\n`;
-        c.scrollTop = c.scrollHeight;
-      })
-      .catch(() => {
-        c.innerText += "[ERROR] Falló la solicitud.";
-      });
-  }
-
-  function showUserAgent() {
-    stopDdos();
-    c.innerText = `> Módulo: Información del Navegador\n> Detectando...\n\n`;
-    c.innerText += `User-Agent: ${navigator.userAgent}`;
-  }
+function mostrarEncabezados() {
+  detenerDDoS();
+  c.innerText = `> Módulo: Encabezados HTTP\n\n`;
+  fetch('https://httpbin.org/headers')
+    .then(res => res.json())
+    .then(data => {
+      for (let clave in data.headers) {
+        c.innerText += `${clave}: ${data.headers[clave]}\n`;
+      }
+    });
+}
 </script>
-
 </body>
 </html>
