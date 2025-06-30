@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>S4T4N-C2 // SISTEMA DE ATAQUE</title>
+  <title>ANTIREBELI0N // SISTEMA DE ATAQUE</title>
   <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
   <style>
     html, body {
@@ -69,10 +69,23 @@
       color: #990000;
       font-family: "UnifrakturCook", cursive;
     }
+    .descripcion {
+      max-width: 700px;
+      margin: 0 auto 40px auto;
+      color: #999;
+      font-size: 12px;
+      padding: 10px;
+      background: #111;
+      border-left: 4px solid #ff0000;
+    }
+    .descripcion span {
+      display: block;
+      margin-bottom: 10px;
+    }
   </style>
 </head>
 <body>
-<div class="title">♱ ⛧ BLACKNET // SISTEMA DE ATAQUE ⛧ ♱</div>
+<div class="title">♱ ⛧ ANTIREBELI0N // SISTEMA DE ATAQUE ⛧ ♱</div>
 <div class="menu">
   <div class="option" onclick="iniciarDDoS()">♱ 01 Ataque DDoS</div>
   <div class="option" onclick="geolocalizarIP()">♱ 02 Geolocalización IP</div>
@@ -80,7 +93,14 @@
   <div class="option" onclick="mostrarUserAgent()">♱ 04 Info del Navegador</div>
   <div class="option" onclick="mostrarEncabezados()">♱ 05 Encabezados HTTP</div>
 </div>
-<div id="console">> BLACKNET listo. Esperando comandos...</div>
+<div class="descripcion">
+  <span>♱ 01 Ataque DDoS: Esta opción simula un ataque de denegación de servicio distribuido, enviando múltiples "paquetes" falsos hacia una dirección IP ingresada. Sirve para visualizar cómo se vería un ataque masivo sin causar daño real.</span>
+  <span>♱ 02 Geolocalización IP: Utiliza un servicio externo para mostrar detalles como país, ciudad, organización, coordenadas GPS y ASN (sistema autónomo) de una dirección IP determinada. Útil para análisis de procedencia y contexto geográfico.</span>
+  <span>♱ 03 Ver IP Pública: Muestra la IP pública de tu conexión actual. Esta IP es visible para servidores web y puede ser utilizada para saber desde dónde te conectás.</span>
+  <span>♱ 04 Info del Navegador: Revela el identificador del navegador (User-Agent), el cual incluye sistema operativo, versión del navegador y otros detalles técnicos. Esta información es útil para reconocimiento de cliente.</span>
+  <span>♱ 05 Encabezados HTTP: Muestra todos los encabezados HTTP que tu navegador envía a los servidores. Son útiles para auditorías y conocer más sobre cómo se identifica tu conexión al hacer peticiones.</span>
+</div>
+<div id="console">> ANTIREBELI0N listo. Esperando comandos...</div>
 <div class="footer">♱ https://t.me/darkwebdb & @rxbelions on ig | versión: 2.1 ♱</div>
 <script>
 const c = document.getElementById("console");
