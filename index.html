@@ -82,6 +82,15 @@
       display: block;
       margin-bottom: 10px;
     }
+    .notaLegal {
+      max-width: 700px;
+      margin: 40px auto;
+      font-size: 11px;
+      color: #444;
+      text-align: center;
+      padding: 5px;
+      border-top: 1px dashed #222;
+    }
   </style>
 </head>
 <body>
@@ -94,14 +103,17 @@
   <div class="option" onclick="mostrarEncabezados()">♱ 05 Encabezados HTTP</div>
 </div>
 <div class="descripcion">
-  <span>♱ 01 Ataque DDoS: Esta opción simula un ataque de denegación de servicio distribuido, enviando múltiples "paquetes" falsos hacia una dirección IP ingresada. Sirve para visualizar cómo se vería un ataque masivo sin causar daño real.</span>
-  <span>♱ 02 Geolocalización IP: Utiliza un servicio externo para mostrar detalles como país, ciudad, organización, coordenadas GPS y ASN (sistema autónomo) de una dirección IP determinada. Útil para análisis de procedencia y contexto geográfico.</span>
-  <span>♱ 03 Ver IP Pública: Muestra la IP pública de tu conexión actual. Esta IP es visible para servidores web y puede ser utilizada para saber desde dónde te conectás.</span>
-  <span>♱ 04 Info del Navegador: Revela el identificador del navegador (User-Agent), el cual incluye sistema operativo, versión del navegador y otros detalles técnicos. Esta información es útil para reconocimiento de cliente.</span>
-  <span>♱ 05 Encabezados HTTP: Muestra todos los encabezados HTTP que tu navegador envía a los servidores. Son útiles para auditorías y conocer más sobre cómo se identifica tu conexión al hacer peticiones.</span>
+  <span>♱ 01 Ataque DDoS: Esta función envía tráfico hacia una dirección IP específica a través de múltiples paquetes sucesivos, generando una sobrecarga en su puerto de comunicación.</span>
+  <span>♱ 02 Geolocalización IP: Obtiene detalles del proveedor de servicio, coordenadas GPS aproximadas, nombre del país y ciudad según la IP ingresada.</span>
+  <span>♱ 03 Ver IP Pública: Detecta automáticamente tu dirección IP pública actual desde servidores externos.</span>
+  <span>♱ 04 Info del Navegador: Recopila los detalles técnicos de tu navegador actual, sistema operativo, motor de renderizado y versión.</span>
+  <span>♱ 05 Encabezados HTTP: Visualiza todos los encabezados HTTP que tu navegador transmite al conectarse con servidores remotos.</span>
 </div>
 <div id="console">> ANTIREBELI0N listo. Esperando comandos...</div>
 <div class="footer">♱ https://t.me/darkwebdb & @rxbelions on ig | versión: 2.1 ♱</div>
+<div class="notaLegal">
+  ⚠ Esta herramienta fue desarrollada únicamente con fines educativos y de demostración. El uso indebido es responsabilidad del usuario final. No nos hacemos responsables por los actos derivados del uso de este sistema.
+</div>
 <script>
 const c = document.getElementById("console");
 let ddosInterval;
