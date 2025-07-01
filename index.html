@@ -177,12 +177,10 @@
 </div>
 
 <script>
-const c = document.getElementById("console");
-let ddosInterval;
-
 function verificarClave() {
   const clave = document.getElementById("clave").value;
-  if (clave === "d3v_atacker") {
+  const claveCorrecta = atob("ZDN2X2F0YWNrZXI="); // "d3v_atacker"
+  if (clave === claveCorrecta) {
     document.getElementById("intro").innerHTML = '<p style="color:red;">Contraseña correcta</p>';
     const cargando = document.getElementById("cargando");
     cargando.style.display = "block";
@@ -206,75 +204,6 @@ function verificarClave() {
   } else {
     alert("Clave incorrecta");
   }
-}
-
-function iniciarDDoS() {
-  const objetivo = prompt("Ingresa la IP de destino para el ataque DDoS:");
-  if (!objetivo) {
-    c.innerText = "> [ERROR] No se especificó una IP.";
-    return;
-  }
-  c.innerText = `> Módulo: Ataque DDoS\n> Objetivo: ${objetivo}\n\n[ INICIANDO ATAQUE ]\n`;
-  c.classList.add("fullscreen");
-  let contador = 1;
-  if (ddosInterval) clearInterval(ddosInterval);
-
-  ddosInterval = setInterval(() => {
-    const puerto = Math.floor(Math.random() * 65535);
-    const aleatorio = Math.random().toString(36).substring(2, 8);
-    const basura = Array(6).fill().map(() => Math.floor(Math.random() * 255).toString(16).padStart(2, '0')).join("");
-    const salida = `⇨ pkt#${contador}@${objetivo}:${puerto} [${aleatorio}] █ ${basura}`;
-    c.innerText += salida + "  ";
-    if (contador % 10 === 0) c.innerText += "\n";
-    c.scrollTop = c.scrollHeight;
-    contador++;
-  }, 30);
-}
-
-function detenerDDoS() {
-  if (ddosInterval) {
-    clearInterval(ddosInterval);
-    ddosInterval = null;
-  }
-}
-
-function geolocalizarIP() {
-  detenerDDoS();
-  const ip = prompt("Ingresa la IP que deseas localizar:");
-  if (!ip) return;
-  c.innerText = `> Módulo: Geolocalización IP\n> IP objetivo: ${ip}\n\nConsultando datos...\n`;
-  fetch(`https://ipapi.co/${ip}/json/`)
-    .then(res => res.json())
-    .then(data => {
-      c.innerText += `IP: ${data.ip}\nPaís: ${data.country_name}\nRegión: ${data.region}\nCiudad: ${data.city}\nOrganización: ${data.org}\nASN: ${data.asn}\nCoordenadas: ${data.latitude}, ${data.longitude}\nVer en mapa: https://maps.google.com/?q=${data.latitude},${data.longitude}`;
-    });
-}
-
-function verIPPublica() {
-  detenerDDoS();
-  c.innerText = `> Módulo: Obtener IP Pública\n\nRealizando solicitud...\n`;
-  fetch('https://api.ipify.org?format=json')
-    .then(res => res.json())
-    .then(data => {
-      c.innerText += `Tu IP pública es: ${data.ip}`;
-    });
-}
-
-function mostrarUserAgent() {
-  detenerDDoS();
-  c.innerText = `> Módulo: Información del Navegador\n\nUser-Agent: ${navigator.userAgent}`;
-}
-
-function mostrarEncabezados() {
-  detenerDDoS();
-  c.innerText = `> Módulo: Encabezados HTTP\n\n`;
-  fetch('https://httpbin.org/headers')
-    .then(res => res.json())
-    .then(data => {
-      for (let clave in data.headers) {
-        c.innerText += `${clave}: ${data.headers[clave]}\n`;
-      }
-    });
 }
 </script>
 
